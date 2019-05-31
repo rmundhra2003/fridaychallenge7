@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Twitter Like Application - Friday Weekly Challenge 5</title>
+    <th:block th:insert="base :: header"></th:block>
+
+</head>
+<div><h2>Welcome [[${user.firstName}]] [[${user.lastName}]] </h2></div></br>
+
+<div th:replace="base :: navlinks"></div>
+<b>Title: </b><span th:text="${message.title}"></span> <br/>
+<b>First Name: </b><span th:text="${message.user.firstName}"></span> <br/>
+<b>Last Name: </b><span th:text="${message.user.lastName}" ></span> <br/>
+<b>Posted Date: </b><span th:text="${message.date}"></span> <br/>
+<b>Content: </b><span th:text="${message.content}"></span> <br/>
+<a th:href="@{/delete/{id}(id=${message.id})}">Delete this message</a>
+
+
+</body>
+</html>

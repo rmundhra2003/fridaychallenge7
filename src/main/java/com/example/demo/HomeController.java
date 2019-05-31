@@ -11,7 +11,7 @@ import javax.validation.Valid;
 @Controller
 public class HomeController {
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @GetMapping("/register")
     public String showRegistrationPage(Model model) {
@@ -34,7 +34,7 @@ public class HomeController {
 
     @RequestMapping("/")
     public String index() {
-        return "index";
+        return "list";
     }
 
     @RequestMapping("/login")

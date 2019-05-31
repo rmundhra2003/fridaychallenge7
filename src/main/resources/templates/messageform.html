@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Twitter Like Application - Friday Weekly Challenge 5</title>
+    <th:block th:insert="base :: header"></th:block>
+
+</head>
+<div><h2>Welcome [[${user.firstName}]] [[${user.lastName}]] </h2></div></br>
+<div th:replace="base :: navlinks"></div>
+<form action="#"
+      th:action="@{/process}"
+      th:object="${message}"
+      method="POST">
+    <input type="hidden" th:field="*{id}" />
+
+    Message Title: <input type="text" th:field="*{title}" />
+    <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span> <br/>
+
+    <!--input type="hidden" th:field="*{uid}" value="${muser.id}"/-->
+    <!--input type="hidden" th:field="*{user}" value="${muser}"/-->
+    <!--User:-->
+    <!--<select name="user" id="user" class="custom-select" th:field="*{user}">-->
+        <!--<option value="">Select User</option>-->
+        <!--<option th:each="user : ${users}"-->
+                <!--th:value="${user.id}"-->
+                <!--th:text="${user.firstName}"/>-->
+    <!--</select><br/>-->
+
+    Content: <textarea rows="3" th:field="*{content}"/>
+    <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span> <br/>
+    <br/>
+
+    Date: <input type="text" th:field="*{date}" >
+    <span th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span> <br/>
+    <br/>
+    <input type="submit" value="Submit" />
+</form>
+</body>
+</html>
