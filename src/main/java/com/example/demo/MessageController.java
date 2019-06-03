@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Controller
@@ -46,6 +48,13 @@ public class MessageController {
         return "mylist";
     }
 
+    String getDate() {
+        ZonedDateTime dateTime = ZonedDateTime.now(); // gets the current date and time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String s = dateTime.format(formatter);
+        return s;
+    }
+
     @GetMapping("/add")
     public String messageForm(Model model) {
 
@@ -70,6 +79,7 @@ public class MessageController {
         }
         message.setUid(userService.getCurrentUser().getId());
         message.setUser(userService.getCurrentUser());
+        message.setDate(getDate());
         System.out.println("The uid in message is "+message.getUid());
         try {
             Map uploadResult = cloudc.upload(file.getBytes(),
