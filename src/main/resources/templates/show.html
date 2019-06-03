@@ -5,16 +5,22 @@
     <th:block th:insert="base :: header"></th:block>
 
 </head>
+<body>
+<p>
 <div><h2>Welcome [[${user.firstName}]] [[${user.lastName}]] </h2></div></br>
 
 <div th:replace="base :: navlinks"></div>
-<b>Title: </b><span th:text="${message.title}"></span> <br/>
-<b>First Name: </b><span th:text="${message.user.firstName}"></span> <br/>
-<b>Last Name: </b><span th:text="${message.user.lastName}" ></span> <br/>
-<b>Posted Date: </b><span th:text="${message.date}"></span> <br/>
-<b>Content: </b><span th:text="${message.content}"></span> <br/>
-<a th:href="@{/delete/{id}(id=${message.id})}">Delete this message</a>
+<h2>Title: <span th:text="${message.title}"></span></h2> <br/>
+<h2>First Name: <span th:text="${message.user.firstName}"></span></h2> <br/>
+<h2>Last Name: <span th:text="${message.user.lastName}" ></span> </h2><br/>
+<h2>Posted Date: <span th:text="${message.date}"></span></h2> <br/>
+<h2>Content: <span th:text="${message.content}"></span></h2> <br/>
+<div th:if="${message.url} != null">
+    <img th:src ="${message.url}" />
+    <hr />
+</div>
+<h2><a th:href="@{/delete/{id}(id=${message.id})}">Delete this message</a></h2>
 
-
+</p>
 </body>
 </html>

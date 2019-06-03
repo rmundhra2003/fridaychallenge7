@@ -1,15 +1,16 @@
 package com.example.demo;
 
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Map;
 
 @Controller
 public class MessageController {
@@ -22,6 +23,10 @@ public class MessageController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    CloudinaryConfig cloudc;
+
 
     @RequestMapping("/list")
     public String listMessages(Model model) {
@@ -43,22 +48,38 @@ public class MessageController {
 
     @GetMapping("/add")
     public String messageForm(Model model) {
+
         User user = userService.getCurrentUser();
+        Message message = new Message();
         // Gets the currently logged in user and maps it to "user" in the Thymeleaf template
         model.addAttribute("user", user );
-        model.addAttribute("message", new Message());
+        model.addAttribute("message", message);
+        model.addAttribute("file", message.getUrl());
         return "messageform";
     }
 
     @PostMapping("/process")
-    public String processForm(@Valid Message message, BindingResult result, Model model) {
+    public String processForm(@Valid Message message, BindingResult result, Model model,
+                              @RequestParam("file")MultipartFile file) {
         if (result.hasErrors()) {
             model.addAttribute("users", userRepository.findAll());
+            return "messageform";
+        }
+        if(file.isEmpty()) {
             return "messageform";
         }
         message.setUid(userService.getCurrentUser().getId());
         message.setUser(userService.getCurrentUser());
         System.out.println("The uid in message is "+message.getUid());
+        try {
+            Map uploadResult = cloudc.upload(file.getBytes(),
+                    ObjectUtils.asMap("resourcetype", "auto"));
+            message.setUrl(uploadResult.get("url").toString());
+        }catch (IOException e) {
+            e.printStackTrace();
+            return "messageform";
+        }
+
         messageRepository.save(message);
         return "redirect:/";
     }
@@ -82,7 +103,9 @@ public class MessageController {
         User user = userService.getCurrentUser();
         // Gets the currently logged in user and maps it to "user" in the Thymeleaf template
         model.addAttribute("user", user );
-        model.addAttribute("message", messageRepository.findById(id).get());
+        messageRepository.findById(id).ifPresent(o -> model.addAttribute("message", o));
+       // model.addAttribute("message", messageRepository.findById(id));
+
         return "show";
     }
 
@@ -91,8 +114,10 @@ public class MessageController {
         User user = userService.getCurrentUser();
         // Gets the currently logged in user and maps it to "user" in the Thymeleaf template
         model.addAttribute("user", user );
-        model.addAttribute("message", messageRepository.findById(id));
+        //model.addAttribute("message", messageRepository.findById(id));
+        messageRepository.findById(id).ifPresent(o -> model.addAttribute("message", o));
         Message msg = messageRepository.findByIdAndUid(id,userService.getCurrentUser().getId());
+
         if(msg != null) {
             System.out.println("Found message\n");
             return "messageform";

@@ -34,7 +34,7 @@ public class HomeController {
 
     @RequestMapping("/")
     public String index() {
-        return "list";
+        return "index";
     }
 
     @RequestMapping("/login")

@@ -5,14 +5,18 @@
     <th:block th:insert="base :: header"></th:block>
 
 </head>
+<body>
 <div><h2>Welcome [[${user.firstName}]] [[${user.lastName}]] </h2></div></br>
 <div th:replace="base :: navlinks"></div>
+
+
 <form action="#"
       th:action="@{/process}"
       th:object="${message}"
+      enctype="multipart/form-data"
       method="POST">
     <input type="hidden" th:field="*{id}" />
-
+    <p>
     Message Title: <input type="text" th:field="*{title}" />
     <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span> <br/>
 
@@ -26,14 +30,23 @@
                 <!--th:text="${user.firstName}"/>-->
     <!--</select><br/>-->
 
-    Content: <textarea rows="3" th:field="*{content}"/>
+    Content: <textarea rows="10" th:field="*{content}"/>
     <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span> <br/>
     <br/>
 
     Date: <input type="text" th:field="*{date}" >
     <span th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span> <br/>
     <br/>
+        <label for="file">Choose file to upload</label>
+        <input type="file" id="file" name="file" /><br/><br/>
+
+    <div th:if="*{url}" != null>
+        <img th:src ="*{url}" />
+        <hr />
+    </div>
     <input type="submit" value="Submit" />
+    </p>
 </form>
+
 </body>
 </html>

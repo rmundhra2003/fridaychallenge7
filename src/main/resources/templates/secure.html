@@ -4,7 +4,7 @@
     <title>Secure Page</title>
     <th:block th:insert="base :: header"></th:block>
 </head>
-<body>
+<p>
 <div><h2>Welcome [[${user.firstName}]] [[${user.lastName}]] </h2></div></br>
 
     <div th:replace="base :: navlinks"></div>
@@ -19,6 +19,6 @@
     <div sec:authorize="hasAuthority('USER')">
         Users will see this text.
     </div>
-
+</p>
 </body>
 </html>

@@ -17,7 +17,7 @@ public class Message {
 
     @Column(name = "content")
     @NotNull
-    @Size(min=3, max=40)
+    @Size(min=3, max=100)
     private String content;
 
     @Column(name = "date")
@@ -31,6 +31,8 @@ public class Message {
 
     @Column(name = "uid")
     private long uid;
+
+    String url;
 
     public Message() {
     }
@@ -89,5 +91,13 @@ public class Message {
 
     public void setUid(long uid) {
         this.uid = uid;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
