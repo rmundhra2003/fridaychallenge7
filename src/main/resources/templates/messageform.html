@@ -34,8 +34,8 @@
     <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span> <br/>
     <br/>
 
-    <!--Date: <input type="text" th:field="*{date}" >-->
-    <!--<span th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span> <br/>-->
+    Date: <input type="text" th:field="*{date}" >
+    <span th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span> <br/>
     <br/>
         <label for="file">Choose file to upload</label>
         <input type="file" id="file" name="file" /><br/><br/>

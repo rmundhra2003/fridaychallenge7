@@ -79,7 +79,7 @@ public class MessageController {
         }
         message.setUid(userService.getCurrentUser().getId());
         message.setUser(userService.getCurrentUser());
-        message.setDate(getDate());
+       // message.setDate(getDate());
         System.out.println("The uid in message is "+message.getUid());
         try {
             Map uploadResult = cloudc.upload(file.getBytes(),
