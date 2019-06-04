@@ -74,21 +74,23 @@ public class MessageController {
             model.addAttribute("users", userRepository.findAll());
             return "messageform";
         }
-        if(file.isEmpty()) {
-            return "messageform";
+        if(!file.isEmpty()) {
+            try {
+                Map uploadResult = cloudc.upload(file.getBytes(),
+                        ObjectUtils.asMap("resourcetype", "auto"));
+                message.setUrl(uploadResult.get("url").toString());
+            }catch (IOException e) {
+                e.printStackTrace();
+                return "messageform";
+            }
         }
+            //return "messageform";
+
         message.setUid(userService.getCurrentUser().getId());
         message.setUser(userService.getCurrentUser());
        // message.setDate(getDate());
         System.out.println("The uid in message is "+message.getUid());
-        try {
-            Map uploadResult = cloudc.upload(file.getBytes(),
-                    ObjectUtils.asMap("resourcetype", "auto"));
-            message.setUrl(uploadResult.get("url").toString());
-        }catch (IOException e) {
-            e.printStackTrace();
-            return "messageform";
-        }
+
 
         messageRepository.save(message);
         return "redirect:/";
